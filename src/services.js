@@ -18,10 +18,10 @@ const deleteBill = (req, res) => {
 
 const getBills = (req, res) => {
     var customerR = req.query.customer
-    var returnData = '';
+    var returnData = [];
     for (let i = 0; i < BILLS_DATA.length; i++) {
         if (customerR == BILLS_DATA[i].customer) {
-            returnData = BILLS_DATA[i]
+            returnData.push(BILLS_DATA[i])
         }
     }
     if (returnData == "") res.json({ message: "Bill not found" }, 401)
@@ -37,14 +37,14 @@ const newBiils = (req, res) => {
     if (body.customer) res.status(405)
 
     var data = {
-        'id': crypto.createHash('sha1').digest('hex'),
+        'id': Math.random().toString(36).substr(2, 9),
         'amount': body.amount,
         'produtc': body.produtc,
         'paymentMethod': body.paymentMethod,
         'customer': body.customer,
     }
     BILLS_DATA.push(data)
-    res.json({ message: "Bill added with success" }, 200)
+    res.json({ message: "Bill added with success", bill: data }, 200)
 
 }
 
